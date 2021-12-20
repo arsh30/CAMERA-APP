@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MEDIA RECORDER</title>
+  </head>
+  <body>
+    <!-- VIDEO HMNE STREAM TOH KRLI NOW WE WANT THAT WE CAN DOWNLOAD -->
+
+    <video autoplay controls></video>
+    <audio autoplay controls></audio>
+    <button>Record</button>
+    <!-- button is used to Start the Recording and as well as stop the recording -->
+
+    <script>
+      let videoPlayer = document.querySelector("video");
+      let videoRecordBtn = document.querySelector("button");
+
+      let recordState = false; //means recording tb krni hai jab button pr click kre so starting me false rkha hai
+      let mediaRecorder; //use -> aate hi video ko kab shuru krna hai
+
+      // at the time of recording after recording we have to save the media Stream (media stream milti h hme buffer format me)
+      // buffer is the format of document.
+      // media stream continously data aata rhega har frame par, har sec par so which data structure is best to store ie ARRAY
+
+      let chunks = [];
+
+      videoRecordBtn.addEventListener("click", function () {
+        if (!recordState) {
+          //   means start the recording
+          mediaRecorder.start();
+          recordState = true;
+          videoRecordBtn.innerText = "RECORDING-STARTED.....";
+        } else {
+          mediaRecorder.stop();
+          recordState = false;
+          videoRecordBtn.innerText = "RECORD";
+        }
+      });
+
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then(function (mediaStream) {
+          videoPlayer.srcObject = mediaStream;
+
+          //  Make Recorder(means yeh btara hai ki konse src ko recor krna h ie MEDIASTREAM)
+          mediaRecorder = new MediaRecorder(mediaStream); // make recorder
+          console.log(mediaRecorder); //mediaReorder have Event listner ondataavailable
+          mediaRecorder.ondataavailable = function (e) {
+            //jb data available hoje tb yeh krna hai, ondataavialable tb run hota hai jb usko stop bhi kro
+            // ONDTAAVAILABLE IS EVENT LISTNER OF HTML
+            chunks.push(e.data);
+          };
+
+          mediaRecorder.onstop = function () {
+            // Making a downloadAble link
+            console.log("chunks", chunks);
+            // let a = document.createElement("a");
+            // a.href = `data:video/mp4, ${encodeURIComponent(JSON.stringify(chunks))}`;
+            // a.download = "temp.mp4";
+            // a.click();
+
+            // we get a blob so make a blob downloadable link
+            let blob = new Blob(chunks, { type: "video/mp4" }); //(1st para is kya store krna hai blob me),2nd parameter is kya mime type hai ie format kya hai
+            //url componenet me convert kra
+            chunks = [];
+            console.log("blob", blob);
+            let blobUrl = URL.createObjectURL(blob); //convert BLOB_URL into URL using createObjectURL
+            console.log("blobUrl", blobUrl);
+            let a = document.createElement("a");
+            a.href = blobUrl;
+            a.download = "temp.mp4";
+            a.click(); //means agar a pr click krege toh hojega run
+          };
+        });
+    </script>
+  </body>
+</html>

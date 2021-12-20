@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MEDIA_DEVICES</title>
+  </head>
+  <body>
+    <!-- yeh different stream ki information pehle lega then unko listen kar skta hai and it can do stream as well -->
+    <!-- MEDIA DEVICES -> It is exactly like a file Reader -->
+    <!-- 1) -> we will get media Stream but for this it will have to listen, so for listening we use vedio and audio tag HTML -->
+    <!-- autoplay -> video will continue start recordig and controls we have some controls play pause forward -->
+    <video autoplay controls></video>
+    <audio autoplay controls></audio>
+    <!-- currently they didnot have audio or video to stream ie source, for source we use them by script -->
+    <script>
+      let audioPlayer = document.querySelector("audio");
+      let videoPlayer = document.querySelector("video");
+      // console.log(navigator);
+      let userAskPromise = navigator.mediaDevices.getUserMedia({ video: true });
+      //navigator it is like a file reader jo bhi work krna hai browser we can do through navigator
+      //get userMedia is taking permission to allow from the user and it is promise based
+      userAskPromise.then(function (mediaStream) {
+        console.log(userAskPromise); //isko resolve krdiya mediaStream ne
+        videoPlayer.srcObject = mediaStream; //mediaStream is streaming Object, yeh continously feed krta rhega video audio until unless we stop this
+        audioPlayer.srcObject = mediaStream; //audio/ video always use Navigator
+        // Navigator is a Part of browser  of Browser.Jo jO Browser ke functions hote hai vo hm only iske through access kr skte bss
+      });
+    </script>
+  </body>
+</html>

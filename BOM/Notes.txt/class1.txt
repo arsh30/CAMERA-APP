@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CANVAS POC - 1</title>
+    <style>
+      body {
+        margin: 0;
+        /* body have some margin thats why we remove this otherwise  it have bydefault value*/
+      }
+
+      canvas {
+        display: block;
+        height: 100vh;
+        width: 100vw;
+        /* now we can draw anything between this */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- we make this canvas through canvas tag, and will gives some height and width so we can draw anything between them [do in style tag]
+    and it is a container -->
+    <canvas></canvas>
+  </body>
+  <!-- 1st fetch the canvas tag -->
+  <script>
+    let canvas = document.querySelector("canvas");
+    console.log(window);  //give canvas attribute properties
+
+    // 2nd step kuch work krne k liye koi pen vgara chaiye hota toh krlete so that is used context
+    let ctx = canvas.getContext("2d"); //ctx is a pen it work only on the
+
+    //to make reactangle -> strokerect (x,y position, width,height)
+    ctx.strokeRect(10, 10, 100, 100); //yeh pixels me nahi leta
+
+    //to draw line -> we have 2 command 1 ctx.beginPath() means ab line start kro, ab apne pen ko kahi bhi kr skte hai, 2nd ctx.moveTo(50,50) (ab pen hmara 50,50 par agaya h (idr se kuch draw krna chahe to kr skte hai or style property bhi dekste hai(ctx.strokeStyle), and ctx.lineto(ab hum kidr hai,udr se 150 , 250 tak le jaeg))) then ctx.stroke -> it is draw function
+    ctx.beginPath();  //means line bnani start krni hai idr se
+    ctx.moveTo(50,50);  //idr tak aagya hmara pen
+    ctx.strokeStyle = "blue";  //to give color
+    ctx.lineWidth = 0.5;
+    ctx.lineTo(150,50);  //idr tak draw krna hai
+    ctx.stroke();  //it is a draw function
+  </script>
+
+  <!-- DOM -> MEANS JO WINDOW KE ANDR krre hai(html se work krre h) ie dom like abhi window me canvas usee krre h ie Dom 
+        BOM - > LOcalstorage,cookies, indexOf, jese hm browser ki functionalities ko control krte hai like e.prevenetDefault()
+    Ya aise krre hai ki jo inspect krte hai usko block krde -->
+
+     /*  Note-> Jbhi new color ka kuch krna draw krna ho to begin path krlege
+    means jb new wale ki properties agar change krni hai or begin path nhi kra toh sabke upr same properties lag jaegi new wali
+    */
+//    ctx.beginPath();
+//    ctx.moveTo(50,100);
+//    ctx.lineWidth = 0.5;
+//    ctx.strokeStyle = "red";
+//    ctx.lineTo(150,100);
+//    ctx.stroke();
+
+========================================================
+
+ // =========================================
+
+    //B) implement mouse moveEvent means mouse se kahin bhi move kre right click to draw hoje
+    let canvas = document.querySelector("canvas");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let ctx = canvas.getContext("2d");
+    let moveToNoted = false; //means abhi nahi pta kidr se move hona start krna hai
+
+    canvas.addEventListener("mousemove", function (e) {
+      //mouse move har time me x,y cordinate change hote hai,console krke dekha ie PAGE X, PAGE Y (the coordinates of page)and
+      // buttons ki value 1 hojati if we click the left button
+      //   console.log(e);
+      if (e.buttons == 1) {
+        //means we click the left button
+        if (!moveToNoted) {
+          //means abhi nhi pta kidr se start krna hai move to noted
+          ctx.beginPath();
+          ctx.moveTo(e.pageX, e.pageY); //so first move hojo udr jidr se draw krna start krna hai
+          ctx.strokeStyle = "blue";
+          ctx.lineWidth = 3;
+          moveToNoted = true; //hm kahin na kahin se start krege move hona yeh hmare pen ko nahi pta, so hmne ik variable liya moveToNoted false means pen k nahi pta kidr se move hona hai
+          //   means usko yeh nhi pta ki left click hua hai so sabse pehle hmne left click ke baare me btaya , so e.pagex,e.pageY se pta lga ki yes idr left click hua hai, or hmne moveTo note true kra  or else me bss draw krra hai
+              //idr hmne stroke isliye nahi liya because idr hmne bss starting position nikali hai and but there are multiple end positions
+        } else {
+          //agar move to noted mark krliya hai, to bss line ko continue rakho drawing krna
+          ctx.lineTo(e.pageX, e.pageY);
+          ctx.stroke();
+        }
+      } else {
+        moveToNoted = false;
+      }
+    });
+
+    =======================================================================================================
+
+    // C ) implement -> pressing the left click and move the mouse krege toh hmko visible hoga rectangle
+
+    let canvas = document.querySelector("canvas");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let ctx = canvas.getContext("2d");
+
+    let startPoint;
+    canvas.addEventListener("mousemove", function (e) {
+      console.log(e);
+      if (e.buttons == 1) {
+        if (startPoint) {
+          ctx.beginPath();
+          ctx.strokeStyle = "blue";
+          ctx.lineWidth = 4;
+
+          let width = e.pageX - startPoint[0]; //e.pageX - > current position se mouse kidr tak move hua hai x direct and y direct
+          let height = e.pageY - startPoint[1];
+          //so rectangle draw krne k liye pehle prev wala remove krege,for remove we use clearRect
+          ctx.clearRect(startPoint[0] - 1, startPoint[1] - 1, width, height); //clear rect jo hai vo apne andr ki sari cheez remove krdeta hai
+          //eg start from 10,10 so isse ik upr se hm delete krna chalue krege like (10 - 1), (10-1) or jidr tak draw hua hai udr tak draw krke lekr jaege like 30,30
+          // starting point still exist and draw upto 30,30
+          ctx.strokeRect(startPoint[0], startPoint[1], width, height);
+        } else {
+          //aate hi start point store krwakr rakhliya array me
+          startPoint = [e.pageX, e.pageY];
+        }
+      } else {
+        startPoint = undefined;
+      }
+    });
+</html>
+
+
+
+==========================================================================
+POC-2 ===========================
+
+

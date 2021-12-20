@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CANVAS POC 2</title>
+  </head>
+  <body>
+    <canvas></canvas>
+
+    <script>
+      let canvas = document.querySelector("canvas");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let ctx = canvas.getContext("2d");
+
+      //create img tag
+      let img = document.createElement("img");
+      img.src = "/temp1.jpg"; //img ko source diya hai isi folder me h
+    //   img.onload = function () { //onload is like a event listner but it work on the HTML usse hm html part
+    //     ctx.drawImage(img, 50, 50, 500, 500); //1st param konsi img- "img", 2nd param -> position 10,10
+    //     //we give the height and width to them because picture is to large
+    //   };
+    img.addEventListener("load",function(){
+      ctx.drawImage(img,0,0,500,500);
+    })
+    
+
+
+    </script>
+  </body>
+</html>
