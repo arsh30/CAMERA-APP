@@ -1,0 +1,59 @@
+body {
+  /* basic step always do this give body, box-sizing */
+  margin: 0;
+  overflow: hidden; /* yeh pehle video container ko dere the, yeh hmesha krna chaiye */
+}
+* {
+  box-sizing: border-box;
+}
+
+.video-container {
+  /* position: fixed; */
+  /*yeh ikdum top left ke corner se left right leti hai , and iska parent se koi lena dena nahi hai, left se start hojaegi */
+  /* border: 1px solid black; */
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  /* width: fit-content; means jo parent div tha usko yeh di toh yeh or parent div equal hogye  */
+}
+
+/* now we adjust the buttons */
+#record-video {
+  position: fixed;
+  right: 6rem; /* right side se 6rem*/
+  top: 40vh;
+  /*  */
+}
+#click-picture {
+  position: fixed;
+  right: 6rem; /* right side se 6rem*/
+  bottom: 40vh;
+  /* button has bedefault white colour */
+}
+
+.filter-container {
+  /* we show this filter container on left side*/
+  border: 1px solid white;
+  position: fixed;
+  top: 20vh; /*just below from top so for that we have to given the position :fixed */
+  left: 5vw;
+  height: 60vh;
+  width: 6vw;
+}
+
+.filter {
+  border: 1px solid white;
+  height: 12vh; /*because we will implement 5 filter, so that total height is 60vh each is 12 vh  */
+}
+
+/* sari properties hmne idr lgadi */
+.filter-screen-parent {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+}
+
