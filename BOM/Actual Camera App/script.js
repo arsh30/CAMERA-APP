@@ -4,7 +4,7 @@ let videoPlayer = document.querySelector("video");
 let vidRecordBtn = document.querySelector("#record-video");
 
 let frame = document.querySelector(".frame");
-frame.style["max-width"] = videoPlayer.offsetWidth + "px";  //jo maxwidth hai isko override krre hai
+frame.style["max-width"] = videoPlayer.offsetWidth + "px"; //jo maxwidth hai isko override krre hai
 
 let captureBtn = document.querySelector("#click-picture");
 
@@ -73,9 +73,11 @@ function capture() {
   let canvas = document.createElement("canvas");
   canvas.width = videoPlayer.videoWidth;
   canvas.height = videoPlayer.videoHeight;
-  console.log(videoPlayer.videoWidth, videoPlayer.videoHeight);
-
-  let ctx = canvas.getContext("2d");
+  // console.log(videoPlayer.videoWidth, videoPlayer.videoHeight);
+  let ctx = canvas.getContext("2d"); //pen move this to center
+  ctx.translate(canvas.width / 2, canvas.height / 2); //this take this to the center
+  ctx.scale(zoom, zoom);
+  ctx.translate(-(canvas.width / 2), -(canvas.height / 2)); //take this pen to origin position
   ctx.drawImage(videoPlayer, 0, 0);
 
   // make color download -> for this we draw a rectangle on the picture using fill rect
