@@ -3,10 +3,29 @@ let constraints = { video: true }; //we want both true but we only true only vid
 let videoPlayer = document.querySelector("video");
 let vidRecordBtn = document.querySelector("#record-video");
 
+let frame = document.querySelector(".frame");
+frame.style["max-width"] = videoPlayer.offsetWidth + "px";  //jo maxwidth hai isko override krre hai
+
 let captureBtn = document.querySelector("#click-picture");
 
 let chunks = [];
 let mediaRecorder;
+
+let zoom = 1; //initial zoom scale
+
+let zoomIn = document.querySelector(".zoom-in");
+zoomIn.addEventListener("click", function () {
+  if (zoom < 2.5) {
+    zoom += 0.1; //zoom pr click kre to scale up hoje
+    videoPlayer.style.transform = `scale(${zoom})`;
+  }
+});
+
+let zoomOut = document.querySelector(".zoom-out");
+zoomOut.addEventListener("click", function () {
+  zoom -= 0.1;
+  if (zoom > 1) videoPlayer.style.transform = `scale(${zoom})`;
+});
 
 captureBtn.addEventListener("click", function () {
   capture();
